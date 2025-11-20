@@ -1,12 +1,12 @@
 import streamlit as st
 import time
 
-# --- 사장님의 검로드 링크 ---
+# --- 사장님의 검로드 링크 (수정 금지) ---
 PRODUCT_URL = "https://kkjjkimberly.gumroad.com/l/lrpkcbe"
 
 st.set_page_config(page_title="Flight Claim AI", page_icon="✈️", layout="centered")
 
-# --- CSS 스타일링 ---
+# --- CSS 스타일링 (모바일 최적화 & 다크모드) ---
 st.markdown("""
     <style>
     .main { background-color: #0e1117; color: #ffffff; }
@@ -19,6 +19,10 @@ st.markdown("""
     .success-box {
         padding: 25px; background-color: #262730;
         border-left: 6px solid #00FF00; border-radius: 8px; margin-bottom: 25px;
+    }
+    /* 텍스트 강제 흰색 처리 */
+    .success-box h2, .success-box p {
+        color: #ffffff !important;
     }
     a { text-decoration: none; }
     </style>
@@ -56,20 +60,22 @@ if st.button("Calculate My Compensation 💵"):
         st.error("Please select how long the delay was.")
     else:
         with st.spinner('Analyzing flight path & legal regulations...'):
-            time.sleep(2) 
+            time.sleep(2) # 분석하는 척 연출
 
         if delay_time == "Less than 3 hours":
             st.warning("⚠️ Typically, delays under 3 hours are not eligible for cash compensation. However, you may claim meals & refreshments.")
         else:
+            # 돈 계산 및 축하 효과
             st.balloons()
             amount = "€600 ($650)"
             if distance == "Short Haul (< 1,500km)": amount = "€250 ($270)"
             elif distance == "Medium Haul (1,500km - 3,500km)": amount = "€400 ($430)"
             
+            # 결과 출력 (CSS 수정됨)
             st.markdown(f"""
             <div class="success-box">
                 <h2 style='margin:0; color:#00FF00;'>🎉 YOU ARE ELIGIBLE!</h2>
-                <p style='font-size:18px; margin-top:10px;'>According to EU Reg 261/2004, the airline owes you:</p>
+                <p style='font-size:18px; margin-top:10px; color:#ffffff;'>According to EU Reg 261/2004, the airline owes you:</p>
                 <h1 style='font-size:50px; color: #00FF00; margin:10px 0;'>{amount}</h1>
                 <p style='color:#cccccc;'>This is your legal right. Claim it now.</p>
             </div>
@@ -77,6 +83,7 @@ if st.button("Calculate My Compensation 💵"):
 
             st.info("👇 We have generated a **Formal Legal Demand Letter** for you.")
 
+            # 편지 미리보기 (블러 처리)
             st.text_area(
                 "Generated Legal Letter (Preview Locked)",
                 f"""Subject: Formal Claim for Compensation - Flight {flight_num if flight_num else '...'}
@@ -87,6 +94,7 @@ Pursuant to Regulation (EC) No 261/2004, I hereby claim compensation...
 [... DOWNLOAD TO UNLOCK FULL TEXT ...]
 """, height=150, disabled=True)
 
+            # 구매 버튼 (검로드 연결)
             st.markdown(f"""
                 <a href="{PRODUCT_URL}" target="_blank">
                     <button style="
